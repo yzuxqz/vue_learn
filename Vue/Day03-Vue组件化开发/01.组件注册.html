@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <hello-world></hello-world>
+        <hello-jerry></hello-jerry>
+        <hello-tom></hello-tom>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        //局部组件
+        var HelloWorld = {
+            data: function () {
+                return {
+                    msg: 'HelloWorld'
+                }
+            },
+            template: '<div>{{msg}}</div>'
+        }
+        var HelloTom = {
+            data: function () {
+                return {
+                    msg: 'Tom'
+                }
+            },
+            template: '<div>{{msg}}</div>'
+        }
+        var HelloJerry = {
+            data: function () {
+                return {
+                    msg: 'HelloWoJerry'
+                }
+            },
+            template: '<div>{{msg}}</div>'
+        }
+
+        //全局组件
+        Vue.component('button-counter', {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button @click="handle">点击了{{count}}次</button>',
+            methods: {
+                handle: function () {
+                    this.count++;
+                }
+            },
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            //局部组件
+            components: {
+                'hello-world': HelloWorld,
+                'hello-tom': HelloTom,
+                'hello-jerry': HelloJerry
+            }
+        })
+    </script>
+</body>
+
+</html>

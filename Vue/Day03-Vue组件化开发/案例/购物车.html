@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <may-cart></may-cart>
+
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        //子组件定义
+        var CartTitle = {
+            props: ['uname'],
+            template: `<div>{{uname}}的商品</div>`
+        }
+        var CartList = {
+            props: ['list'],
+            template: `   
+          
+        <ul>
+            <li v-for='item in list'>
+                <img :src="item.img" alt="图片">
+                <span>{{item.name}}</span>
+                <button @click='sub(item.id)'>-</button>
+                <!-- 父组件传来的只能显示不能修改，这是数据流单项原则 所以绑定属性来显示数据，再手动绑定失去焦点自定义事件来去父组件中国接受从而修改数据 $event代表改数据的最新值-->
+                <input type="text" :value='item.num' @blur='changeNum(item.id,$event)'>
+                <button @click='add(item.id)'>+</button>
+                <a href="" @click.prevent='del(item.id)'>删除</a>
+            </li>
+        </ul>`,
+            methods: {
+                //因为不推荐在子组件中直接操作list的数据，所以应该通知父组件去操作
+                del: function (id) {
+                    //自定义事件传递信息
+                    this.$emit('cart-del', id);
+                },
+                //用type是为了能在父组件的事件中中区分传来的事件需要什么操作
+                sub: function (id) {
+                    this.$emit('change-num', {
+                        id: id,
+                        type: 'sub'
+                    })
+                },
+                add: function (id) {
+                    this.$emit('change-num', {
+                        id: id,
+                        type: 'add'
+                    })
+                },
+                changeNum: function (id, event) {
+                    this.$emit('change-num', {
+                        id: id,
+                        type: 'change',
+                        //获取商品此时的数量，事件对象的target表示当前的对象的值
+                        num: event.target.value
+                    })
+                }
+            },
+        }
+        var CartTotal = {
+            props: ['list'],
+            template: `        <div>
+            <span>总价：</span>
+            <span>{{total}}</span>
+            <button>结算</button>
+        </div>`,
+            //计算属性
+            computed: {
+                total: function () {
+                    //计算商品的总价
+                    var t = 0;
+                    this.list.forEach(item => {
+                        t += item.price * item.num;
+                    });
+                    return t;
+                }
+            },
+        }
+
+        //父组件
+        Vue.component('may-cart', {
+            data: function () {
+                return {
+                    uname: 'xqz',
+                    list: [{
+                            id: 1,
+                            name: 'TCL彩电',
+                            price: 1000,
+                            num: 1,
+                            img: ''
+                        },
+                        {
+                            id: 2,
+                            name: '机顶盒',
+                            price: 1000,
+                            num: 2,
+                            img: ''
+                        }, {
+                            id: 3,
+                            name: '海尔冰箱',
+                            price: 1000,
+                            num: 4,
+                            img: ''
+                        }, {
+                            id: 4,
+                            name: '小米手机',
+                            price: 1000,
+                            num: 1,
+                            img: ''
+                        }, {
+                            id: 5,
+                            name: '笔记本电脑',
+                            price: 1000,
+                            num: 1,
+                            img: ''
+                        }
+                    ]
+                }
+            },
+            //父组件接受子组件的事件，所以要绑定自定义事件，接受事件参数用$event
+            template: `<div>
+                <cart-title :uname='uname'></cart-title>
+                <cart-list :list='list' @cart-del='delCart($event)' @change-num='changeNum($event)'></cart-list>
+                <cart-total :list='list'></cart-total>
+                </div>`,
+            //子组件
+            components: {
+                'cart-title': CartTitle,
+                'cart-list': CartList,
+                'cart-total': CartTotal,
+            },
+            methods: {
+                changeNum: function (val) {
+                    //分为三种情况
+                    //1.输入域变更
+                    //根据子组件传递过来的数据更新list中对应的数据
+                    //对数组遍历
+                    if (val.type == 'change') {
+                        this.list.some(item => {
+                            if (item.id == val.id) {
+                                item.num = val.num;
+                                //true中止遍历
+                                return true;
+                            }
+                        });
+                    }
+                    //2.加号变更
+                    else if (val.type == 'add') {
+                        this.list.some(item => {
+                            if (item.id == val.id) {
+                                item.num += 1;
+                                //true中止遍历
+                                return true;
+                            }
+                        });
+                    }
+                    //3.减号变更
+                    else if (val.type == 'sub') {
+                        this.list.some(item => {
+                            if (item.id == val.id) {
+                                item.num -= 1;
+                                //true中止遍历
+                                return true;
+                            }
+                        });
+                    }
+
+                },
+                delCart: function (id) {
+                    //根据id删除list中对应的数据
+                    //1.找到id所对应数据的索引
+                    var index = this.list.findIndex(item => {
+                        return item.id == id;
+                    });
+                    //2.根据索引删除对应数据
+                    this.list.splice(index, 1);
+                }
+            }
+        });
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                title: '我的商品',
+                list: [{
+                    id: 1,
+                    name: 'TCL彩电'
+                }]
+            }
+        })
+    </script>
+</body>
+
+</html>

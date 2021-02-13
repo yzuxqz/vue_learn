@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <cpn :cnum1="num1"
+       :cnum2="num2"
+       @num1-change="num1change"
+       @num2-change="num2change"></cpn>
+</div>
+
+<template id="cpn">
+  <div>
+    <div>props:{{cnum1}}</div>
+    <h2>data:{{dnum1}}</h2>
+    <input type="text" :value="dnum1" @input="num1Input">
+    <input type="text" v-model="dnum1">
+    <div>props:{{cnum2}}</div>
+    <h2>data:{{dnum2}}</h2>
+    <input type="text" :value="dnum2" @input="num2Input">
+    <input type="text" v-model="dnum2">
+  </div>
+
+</template>
+<script src="../../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      num1: 1,
+      num2: 0
+    },
+    methods: {
+      num1change(value) {
+        this.num1 = parseFloat(value)
+      },
+      num2change(value) {
+        this.num2 = parseFloat(value)
+      }
+    },
+    components: {
+      cpn: {
+        template: `#cpn`,
+        props: {
+          cnum1: {
+            type: Number,
+            default: 0
+          },
+          cnum2: {
+            type: Number,
+            default: 0
+          }
+        },
+        data() {
+          return {
+            dnum1: this.cnum1,
+            dnum2: this.cnum2
+          }
+        },
+        methods: {
+          num1Input(event) {
+            // 将input中的value赋值到dnum中
+            this.dnum1 = event.target.value
+            // 将dnum1的值通过事件传递给父组件
+            this.$emit('num1-change', this.dnum1)
+            //同时修改dnum2的值
+            this.dnum2 = this.dnum1*100
+            //将dnum2的值通过事件传递给父组件
+            this.$emit('num2-change',this.dnum2)
+          },
+          num2Input(event) {
+            this.dnum2 = event.target.value
+            this.$emit('num2-change', this.dnum2)
+            //同时修改dnum1的值
+            this.dnum1 = this.dnum2/100
+            //将dnum1的值通过事件传递给父组件
+            this.$emit('num1-change',this.dnum1)
+          }
+        }
+      }
+    }
+  })
+</script>
+</body>
+</html>

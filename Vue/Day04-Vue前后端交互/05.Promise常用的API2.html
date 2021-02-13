@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function queryData(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState != 4) return;
+                    if (xhr.readyState === 4 && xhr.status == 200) {
+                        //处理正常的情况
+                        resolve(xhr.responseText);
+                    } else {
+                        //处理异常情况
+                        reject('服务器错误')
+                    }
+                };
+                xhr.open('get', url);
+                xhr.send(null);
+            });
+        };
+
+        //3个异步的接口调用
+        var p1 = queryData('http://localhost:3000/data');
+        var p2 = queryData('http://localhost:3000/data1');
+        var p3 = queryData('http://localhost:3000/data2');
+        Promise.all([p1, p2, p3]).then(function (data) {
+            console.log(data);//返回的是一个数组，顺序和传参一一对应，直到所有结果都传过来的才执行then，得到所有结果
+        });
+        Promise.all([p1, p2, p3]).then(function (data) {
+            console.log(data);//得到最快返回的一个结果
+        })
+    </script>
+</body>
+
+</html>

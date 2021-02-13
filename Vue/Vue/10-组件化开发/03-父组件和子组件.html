@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <father></father>
+</div>
+<script src="../vue.js"></script>
+<script>
+  Vue.component('father',{
+    template:`<div>
+<h2>我是父标题</h2>
+<p>我是父内容</p>
+      <cpn1></cpn1>
+</div>`,
+    components:{
+      cpn1:{
+        template:`<div>
+<h2>我是子标题</h2>
+<p>我是子内容</p>
+</div>`
+      }
+    }
+  })
+  Vue.component('son',{
+    template:`<div>
+<h2>我是子标题</h2>
+<p>我是子内容</p>
+</div>`
+  })
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    }
+  })
+</script>
+</body>
+</html>

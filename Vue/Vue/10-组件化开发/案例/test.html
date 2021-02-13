@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <cpn :cnum1="num1"
+       :cnum2="num2"
+       @num1change="num1change"
+       @num2change="num2change"
+       ref="aaa"
+  ></cpn>
+  <button @click="change">按钮</button>
+</div>
+<template id="cpn">
+  <div>
+    <h2>props:{{cnum1}}</h2>
+    <h4>data:{{dnum1}}</h4>
+    <input type="text" v-model="dnum1">
+    <h2>props:{{cnum2}}</h2>
+    <h4>data:{{dnum2}}</h4>
+    <input type="text" v-model="dnum2">
+  </div>
+</template>
+<script src="../../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      num1: 1,
+      num2: 0
+    },
+    methods: {
+      num1change(value) {
+        this.num1 = parseFloat(value)
+      },
+      num2change(value) {
+        this.num2 = parseFloat(value)
+      },
+      change(){
+        console.log(this.$refs.aaa._data.dnum1)
+        this.num2 =parseFloat(this.$refs.aaa._data.dnum1)
+      }
+    },
+    components: {
+      cpn: {
+        template: `#cpn`,
+        props: {
+          cnum1: Number,
+          cnum2: Number
+        },
+        data() {
+          return {
+            dnum1: this.cnum1,
+            dnum2: this.cnum2
+          }
+        },
+        watch: {
+          dnum1: function (newValue, oldValue) {
+            this.dnum1 = newValue
+            this.$emit('num1change', newValue)
+          },
+          dnum2: function (newValue, oldValue) {
+            this.dnum2 = newValue
+            this.$emit('num2change', newValue)
+          }
+        }
+      }
+    }
+  })
+</script>
+</body>
+</html>

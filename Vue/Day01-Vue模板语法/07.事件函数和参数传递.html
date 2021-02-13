@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{num}}</div>
+        <button @click='handle(123,456,$event)'>点击1</button>
+        <button @click='handle2'>点击2</button>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                num: 0
+            },
+            methods: {
+                handle: function (p1, p2, event) {
+                    this.num++; //this指vm指的是vue的实例
+                    console.log(p1, p2);
+                    console.log(event.target.innerHTML);     
+                },
+                handle2: function (event) {
+                    console.log(event.target.innerHTML);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div :style='{fontSize:fontSize + "px"}'>{{pmsg}}</div>
+        <menu-item :pmsg='pmsg' @changecontent='handle' @changefont='handle2'></menu-item>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component('menu-item', {
+            props: ['pmsg'],
+            template: `
+            <div>
+            <div>{{pmsg}}</div>
+            <button @click='$emit("changecontent")'>改变父组件中的值</button>
+            <button @click='$emit("changefont")'>改变父组件字体大小</button>
+            </div>
+            `
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                pmsg: '父组件中的内容',
+                fontSize: 10
+            },
+            methods: {
+                handle: function () {
+                    //改变父组件的值
+                    this.pmsg = this.pmsg + "1";
+                },
+                handle2: function () {
+                    //改变字体大小
+                    this.fontSize += 5;
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

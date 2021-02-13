@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <router-link to="/user">User</router-link>
+        <router-link to="/register">Register</router-link>
+
+        <router-view></router-view>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script src="../js/vue-router.js"></script>
+    <script>
+        const User = {
+            template: `<div>User组件</div>`
+        }
+        //1.在父组件模板中定义router-link和router-view
+        const Register = {
+            template: `<div>
+            <div>Register组件</div>
+            <router-link to="/register/tab1">Tab1</router-link>
+            <router-link to="/register/tab2">Tab2</router-link>
+            <router-view></router-view>
+            </div>
+            `
+        }
+
+        //3.定义子组件
+        const Tab1 = {
+            template: `
+            <div>Tab1组件</div>
+            `
+        }
+        const Tab2 = {
+            template: `
+            <div>Tab2组件</div>
+            `
+        }
+        //2.父级路由中通过children属性，为register添加子路由规则
+        const router = new VueRouter({
+            routes: [{
+                path: '/user',
+                component: User
+            }, {
+                path: '/register',
+                component: Register,
+                children: [{
+                        path: '/register/tab1',
+                        component: Tab1
+                    },
+                    {
+                        path: '/register/tab2',
+                        component: Tab2
+                    }
+                ]
+            }]
+        })
+        var vm = new Vue({
+            el: '#app',
+            router
+        })
+    </script>
+</body>
+
+</html>

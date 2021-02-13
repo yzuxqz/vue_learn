@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div id="app">
+            <!-- 1.路由标签，默认是a标签-->
+            <router-link to="/user">User</router-link>
+            <router-link to="/register">Register</router-link>
+
+            <!-- 2.路由占位符，切换路由后显示内容的区域 -->
+            <router-view></router-view>
+        </div>
+        <script src="../js/vue.js"></script>
+        <script src="../js/vue-router.js"></script>
+        <script>
+            /*jshint esversion: 6 */
+            //3.路由组件
+            const User = {
+                template: '<h1>User组件</h1>'
+            }
+            const Register = {
+                template: `<h1>Register组件</h1>`
+            }
+
+            //4.创建路由实例对象
+            const router = new VueRouter({
+                //5.路由规则
+                routes: [{
+                        path: '/user',
+                        component: User //只接受组件对象，不接受字符串
+                    },
+                    {
+                        path: '/register',
+                        component: Register //只接受组件对象，不接受字符串
+                    }
+                ]
+            })
+            //6.把路由挂载到跟实例中
+            var vm = new Vue({
+                el: '#app',
+                router //挂载
+            })
+        </script>
+    </body>
+
+    </html>
+</body>
+
+</html>

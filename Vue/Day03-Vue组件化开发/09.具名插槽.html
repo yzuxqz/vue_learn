@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <base-layout>
+            <p slot="header">header赋值</p>
+            <p>主要内容1</p>
+            <p>主要内容2</p>
+            <p slot="body">header赋值</p>
+        </base-layout>
+
+
+        <base-layout>
+            <template slot="header">
+                <p>header赋值1</p>
+                <p>header赋值2</p>
+            </template>
+            <template slot="body">
+                <p>body赋值1</p>
+                <p>body赋值2</p>
+            </template>
+        </base-layout>
+
+
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component('base-layout', {
+            template: `
+            <div>
+            <slot name="header"></slot>
+            <slot name="body"></slot>
+            <slot></slot>
+            </div>
+            `
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {}
+        })
+    </script>
+</body>
+
+</html>

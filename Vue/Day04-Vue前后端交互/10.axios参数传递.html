@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="axios.js"></script>
+    <script>
+        //get
+        //通过URL
+        //传统url
+        axios.get('/axios?id=123')
+            .then(function (ret) {
+                console.log(ret.data);
+            })
+        //Resful形式的url
+        axios.get('/axios/123 ')
+            .then(function (ret) {
+                console.log(ret.data);
+            })
+
+        //通过params属性
+        axios.get('axios', {
+            params: {
+                id: 123
+            }
+        }).then(function (ret) {
+            console.log(ret.data);
+        })
+
+
+        //delete
+        axios.delete('axios', {
+                params: {
+                    id: 111
+                }
+            })
+            .then(ret => {
+                console.log(ret.data);
+            });
+
+        //post
+        //默认json格式
+        axios.post('axios', {
+                uname: 'lisi',
+                pwd: 123
+            })
+            .then(ret => {
+                console.log(ret.data);
+            });
+
+        //urencoded格式
+        var params = new URLSearchParams();
+        params.append('uname', 'zhangsan');
+        params.append('pwd', '111');
+        axios.post('/axios', params).then(ret => {
+            console.log(ret.data);
+        })
+
+        //put
+        axios.put('axios/123', {
+            uname: 'wangwu',
+            pwd: 123
+        }).then(ret => {
+            console.log(ret.data);
+        })
+    </script>
+</body>
+
+</html>

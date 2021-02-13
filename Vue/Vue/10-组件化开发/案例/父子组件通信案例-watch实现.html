@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <son :sonnum1="num1" :sonnum2="num2" @num1change="num1change" @num2change="num2change"></son>
+</div>
+<template id="son">
+  <div>
+    <h2>props:{{sonnum1}}</h2>
+    <h2>data:{{sondnum1}}</h2>
+    <input type="text" v-model="sondnum1">
+    <h2>props:{{sonnum2}}</h2>
+    <h2>data:{{sondnum2}}</h2>
+    <input type="text"  v-model="sondnum2">
+  </div>
+</template>
+<script src="../../vue.js"></script>
+<script>
+  const son = {
+    template:`#son`,
+    props:{
+      sonnum1:Number,
+      sonnum2:Number
+    },
+    data(){
+      return{
+        sondnum1:this.sonnum1,
+        sondnum2:this.sonnum2
+      }
+    },
+    watch:{
+      sondnum1:function (newValue,oldValue) {
+        this.sondnum1=newValue
+        this.$emit('num1change',this.sondnum1)
+        this.sondnum2 = this.sondnum1*100
+        this.$emit('num2change',this.sondnum2)
+      },
+      sondnum2:function (newValue,oldValue) {
+        this.sondnum2=newValue
+        this.$emit('num2change',this.sondnum2)
+        this.sondnum1 = this.sondnum2/100
+        this.$emit('num1change',this.sondnum1)
+      }
+    }
+  }
+  const app = new Vue({
+    el: '#app',
+    data: {
+      num1:1,
+      num2:0
+    },
+    components:{
+      son
+    },
+    methods:{
+      num1change(value){
+        this.num1= parseFloat(value)
+      },
+      num2change(value){
+        this.num2 = parseFloat(value)
+      }
+    }
+  })
+</script>
+</body>
+</html>

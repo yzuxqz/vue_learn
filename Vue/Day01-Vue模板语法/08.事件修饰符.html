@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        <div @click='handle2'>
+            <button @click.stop='handle1'>点击</button>
+        </div>
+        <a href="http://www.baidu.com" @click.prevent='handle3'>百度一下</a>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 1
+            },
+            methods: {
+                handle1: function (event) {
+                    //阻止冒泡(传统方式)
+                    //event.stopPropagation();
+                },
+                handle2: function () {
+                    this.msg++;
+                },
+                handle3: function (event) {
+                    //阻止默认行为
+                    //event.preventDefault();
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

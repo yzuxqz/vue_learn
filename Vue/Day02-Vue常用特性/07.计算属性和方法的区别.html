@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        <!-- 第一次调用reserveString方法会将结果进行缓存 -->
+        <div>{{reserveString}}</div>
+        <!-- 第二次调用会使用第一次的结果，比较耗时的计算可以节省性能 -->
+        <div>{{reserveString}}</div>
+        <!-- 函数则不会有缓存 -->
+        <div>{{reserveMessage()}}</div>
+        <div>{{reserveMessage()}}</div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: 'nihao',
+                num: 100
+            },
+            methods: {
+                reserveMessage: function () {
+                    console.log('method');
+                    return this.msg.split('').reverse().join('');
+                }
+            },
+            computed: {
+                reserveString: function () {
+                    console.log('computed');
+                    var total = 0;
+                    for (var i = 0; i <= this.num; i++) {
+                        total += i;
+                    }
+                    // return this.msg.split('').reverse().join('');
+                    return total;
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

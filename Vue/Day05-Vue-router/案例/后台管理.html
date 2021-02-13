@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        list-style: none;
+    }
+
+    .left {
+        float: left;
+    }
+</style>
+<script src="../../js/vue.js"></script>
+<script src="../../js/vue-router.js"></script>
+
+<body>
+    <div id="app">
+        <!-- 4.路由占位符 -->
+        <router-view></router-view>
+    </div>
+
+    <script>
+        //1.定义app根组件
+        const App = {
+            template: `
+            <div>
+                <!-- 头部 -->
+                <header>后台管理系统</header>
+                <!-- 中间主体 -->
+                <div>
+                    <!-- 左侧菜单栏 -->
+                    <div class="left">
+                        <ul>
+                        <!--5. 修改路由链接-->
+                            <li><router-link to="/users">用户管理</router-link></li>
+                            <li><router-link to="/rights">权限管理</router-link></li>
+                            <li><router-link to="/goods">商品管理</router-link></li>
+                            <li><router-link to="/orders">订单管理</router-link></li>
+                            <li><router-link to="/settings">系统设置</router-link></li>
+                        </ul>
+                    </div>
+                    <!-- 右侧内容 -->
+                    <!--7. 定义路由占位符-->
+                    <div class="left"><router-view></router-view></div>
+                </div>
+            </div>`
+        }
+
+
+        //6.定义子组件
+        const Users = {
+            //10.私有数据
+            data: function () {
+                return {
+                    userlist: [{
+                            id: 1,
+                            name: '张三',
+                            age: 10
+                        },
+                        {
+                            id: 2,
+                            name: '张四',
+                            age: 11
+                        },
+                        {
+                            id: 3,
+                            name: '张五',
+                            age: 12
+                        },
+                        {
+                            id: 4,
+                            name: '张六',
+                            age: 13
+                        }
+                    ]
+                }
+            },
+            methods: {
+                godetail: function (id) {
+                    //14.编程式路由动态传参
+                    this.$router.push('/userinfo/' + id);
+                }
+            },
+            //11.建立表格渲染私有数据
+            template: `
+            <div>
+                <div>用户管理表单</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>性名</th>
+                        <th>年龄</th>
+                        <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in userlist" :key="item.id">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.age}}</td>
+                        <td>
+                            <!--13.添加点击事件完成编程式导航-->
+                        <a href="javascript:;" @click="godetail(item.id)">详情</a>
+                        </td>
+                    </tr>                
+                </tbody>
+            </table>
+            </div>
+            `
+        }
+        const Userinfo = {
+            props: ['id'],
+            template: `
+            <div>
+            <h5>{{id}}用户详情页面</h5>
+            <button @click="back">后退</button>
+            </div>
+            `,
+            methods: {
+                back: function () {
+                    this.$router.go(-1);
+                }
+            },
+        }
+        const Rights = {
+            template: `<div>权限管理表单</div>`
+        }
+        const Goods = {
+            template: `<div>商品管理表单</div>`
+        }
+        const Orders = {
+            template: `<div>订单管理表单</div>`
+        }
+        const Settings = {
+            template: `<div>系统设置表单</div>`
+        }
+        //2.创建路由对象
+        const router = new VueRouter({
+            routes: [{
+                path: '/',
+                component: App,
+                //9.重定向到user子路由
+                redirect: '/users',
+                //8.定义子路由规则
+                children: [{
+                        path: '/users',
+                        component: Users
+                    },
+                    {
+                        //15.在这里定义接收动态参数
+                        path: '/userinfo/:id', //12.定义详细页路由规则
+                        component: Userinfo,
+                        props: true
+                    }, {
+                        path: '/rights',
+                        component: Rights
+                    }, {
+                        path: '/goods',
+                        component: Goods
+                    }, {
+                        path: '/orders',
+                        component: Orders
+                    }, {
+                        path: '/settings',
+                        component: Settings
+                    }
+                ]
+            }, ]
+
+        })
+
+
+        const vm = new Vue({
+            el: '#app',
+            //3.挂载
+            router
+        })
+    </script>
+</body>
+
+</html>

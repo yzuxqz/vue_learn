@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <select name="choose" id="" v-model="fruit" multiple>
+    <option value="苹果" >苹果</option>
+    <option value="香蕉" >香蕉</option>
+    <option value="榴莲" >榴莲</option>
+  </select>
+  <h2>{{fruit}}</h2>
+</div>
+<script src="../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello',
+      fruit:[]
+    }
+  })
+</script>
+</body>
+</html>

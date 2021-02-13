@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <button @click="btnClick(123)">按钮1</button>
+  <button @click="btnClick">按钮2</button>
+  <button @click="btnClick(message,$event)">按钮3</button>
+  <button>按钮4</button>
+</div>
+<script src="../vue.js"></script>
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: 'hello'
+    },
+    methods:{
+      btnClick(a,event){
+        console.log(a)
+        console.log(event)
+      }
+    }
+  })
+</script>
+</body>
+</html>

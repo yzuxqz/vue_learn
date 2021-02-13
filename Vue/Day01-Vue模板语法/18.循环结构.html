@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>水果列表</div>
+        <ul>
+            <!-- 遍历数组 -->
+            <li :key='item.id' v-for='item in fruits'>{{item}}</li>
+            <li v-for='(item,index) in fruits'>{{item+'------'+index}}</li>
+            <li v-for='(item,index) in myfruits'>
+                <span>{{item.cname+'------'+index}}</span>
+                <span>{{item.ename+'------'+index}}</span>
+            </li>
+
+            <!-- 遍历对象 -->
+            <div v-if='obj["age"] > 10 ' v-for='(value,key,index) in obj'>{{key + '-----' + value + '-----' + index}}</div>
+
+        </ul>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                fruits: ['apple', 'orange', 'banana'],
+                myfruits: [{
+                        ename: 'apple',
+                        cname: '苹果'
+                    },
+                    {
+                        ename: 'orange',
+                        cname: '橘子'
+                    },
+                    {
+                        ename: 'banana',
+                        cname: '香蕉'
+                    },
+                ],
+                obj:{
+                    uname: 'xqz',
+                    age: 21,
+                    gender: 'male'
+                }
+            },
+            methods: {
+
+            },
+        })
+    </script>
+    <script>
+        var obj = {
+            uname: 'xqz',
+            age: 21,
+            gender: 'male'
+        }
+        for (var key in obj) {
+            console.log(key, obj[key]);
+
+        }
+    </script>
+</body>
+
+</html>

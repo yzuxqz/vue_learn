@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      ul li {
+        float: left;
+        list-style: none;
+        width: 100px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        border: 1px solid #000;
+        border-left: none;
+        box-sizing: border-box;
+
+      }
+
+      ul li.active {
+        background-color: orange;
+      }
+
+      ul {
+        overflow: hidden;
+      }
+
+      .show {
+        display: none;
+        width: 300px;
+        height: 200px;
+        border: 1px solid #000;
+        border-top: none;
+        box-sizing: border-box;
+        text-align: center;
+        line-height: 200px;
+      }
+
+      .current {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="tab">
+        <ul>
+          <!-- 你点的那个和相应的dom元素对应时有class -->
+          <!-- 选项卡的索引等于渲染的数据的索引 -->
+          <li :class='currentIndex==index?"active":""' :key='item.id' v-for='(item,index) in list'
+            @click='handle(index)'>{{item.title}}</li>
+        </ul>
+        <div :class="currentIndex==index?'current':''" :key='item.id' v-for='(item,index) in list' class="show">
+          {{item.path}}</div>
+      </div>
+
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          currentIndex: 0, //根据点击而变化
+          list: [{
+            id: 1,
+            title: 'tab栏1',
+            path: 'tab栏1内容'
+          }, {
+            id: 2,
+            title: 'tab栏2',
+            path: 'tab栏2内容'
+          }, {
+            id: 3,
+            title: 'tab栏3',
+            path: 'tab栏3内容'
+          }]
+        },
+        methods: {
+          handle: function (index) {
+            this.currentIndex = index;
+          }
+        },
+      })
+    </script>
+  </body>
+
+</html>

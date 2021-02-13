@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        编号：<input type="text" v-model='id' :disabled='flag' v-focus>
+        名称：<input type="text" v-model='name'>
+        <button @click='handle' :disabled='submitflag'>提交</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>名称</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr :key='item.id' v-for='(item,index) in books'>
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.date}}</td>
+                    <td>
+                        <a href="" @click.prevent='modify(item.id)'>修改</a>
+                        <a href="" @click.prevent='del(item.id)'>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="border:1px solid #000;height: 100px">
+            <span>图书总数：</span>
+            <span>{{total}}</span>
+        </div>
+    </div>
+    <script src="../../js/vue.js"></script>
+    <script>
+        Vue.directive('focus', {
+            inserted: function (el) {
+                el.focus();
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                id: '',
+                name: '',
+                flag: false,
+                submitflag: false,
+                books: []
+            },
+            methods: {
+                handle: function () {
+                    if (this.flag) {
+                        //修改
+                        //根据当前的id去更新数组中对应的数据
+                        this.books.some((item) => { //箭头函数中的this指向定义这个函数的父级作用域中的this，也就是handle的this，指向vue实例
+                            if (item.id == this.id) {
+                                item.name = this.name;
+                                //完成更新操作后需要中止some遍历
+                                return true;
+                            }
+                        });
+                        this.flag = false;
+                    } else {
+                        //添加
+                        //添加图书
+                        var book = {};
+                        book.id = this.id;
+                        book.name = this.name;
+                        book.date = '';
+                        this.books.push(book);
+                    }
+                    //清空表单
+                    this.id = '';
+                    this.name = '';
+                },
+                modify: function (id) {
+                    //禁止修改id
+                    this.flag = true;
+                    //根据id查询出要编辑的数据,返回的是一个Array数组对象
+                    var book = this.books.filter(function (item) {
+                        return item.id == id;
+                    });
+                    //把获取到的信息填充到表单
+                    this.id = book[0].id;
+                    this.name = book[0].name;
+
+                },
+                del: function (id) {
+                    //删除图书
+                    //根据id从数组中查找元素的索引
+                    var index = this.books.findIndex(function (item) {
+                        return item.id == id;
+                    });
+                    //根据索引删除元素
+                    this.books.splice(index, 1);
+                    //------------------------------------
+                    // 方法二：通过数组的filter方法删除
+                    // this.books = this.books.filter(function (item) {
+                    //     return item.id != id;
+                    // });
+                }
+            },
+            computed: {
+                total: function () {
+                    //计算图书的总数
+                    return this.books.length;
+                }
+            },
+            watch: {
+                name: function (val) {
+                    //验证图书名称是否已经存在
+                    var flag = this.books.some(function (item) {
+                        return item.name == val;
+                    });
+                    if (flag) {
+                        //图书名存在
+                        this.submitflag = true;
+                    } else {
+                        //图书名不存在
+                        this.submitflag = false;
+                    }
+                }
+            },
+            mounted: function () {
+                //该生命周期钩子函数被触发时，模板已经可以使用
+                //一般此时用于获取后台数据，把数据填充到模板
+                var data = [{
+                    id: 1,
+                    name: '三国演义',
+                    date: '2525609975000'
+                }, {
+                    id: 2,
+                    name: '水浒传',
+                    date: '2525609975000'
+                }, {
+                    id: 3,
+                    name: '红楼梦',
+                    date: '2525609975000'
+                }, {
+                    id: 4,
+                    name: '西游记',
+                    date: '2525609975000'
+                }];
+                this.books = data;
+            },
+        })
+    </script>
+</body>
+
+</html>

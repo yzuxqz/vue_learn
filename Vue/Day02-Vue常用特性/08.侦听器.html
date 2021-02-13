@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div> 名：<input type="text" v-model='firstName'></div>
+        <div> 姓：<input type="text" v-model='lastName'></div>
+        <div v-model='fullName'>{{fullName}}</div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                firstName: 'xqz',
+                lastName: '666',
+                fullName: 'xqz 666'
+            },
+            // 用计算属性实现
+            // computed: {
+            //     fullName:function(){
+            //         return this.firstName + ' ' + this.lastName; 
+            //     }
+            // },
+            watch: {
+                firstName: function (val) { //val表示的是当前数据的最新值
+                    this.fullName = val + '' + this.lastName;
+                },
+                lastName: function (val) {
+                    this.fullName = this.firstName + '' + val;
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

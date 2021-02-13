@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .active {
+            width: 100px;
+            height: 100px;
+            border: 1px solid red;
+        }
+
+        .error {
+            background-color: orange;
+        }
+
+        .test {
+            color: aqua;
+        }
+        .base{
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div v-bind:class='[arrClasses,{test:isTest}]'>数组和对象的结合</div>
+        <div :class='objClasses'></div>
+        <button @click='handle'>切换</button>
+        <div class="base" :class='objClasses'></div>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                isTest: true,
+                arrClasses: ['active', 'error'],
+                objClasses: {
+                    active: true,
+                    error: true,
+                }
+            },
+            methods: {
+                handle: function () {
+                    this.arrClasses.pop();
+                    this.objClasses.error = false;
+                    this.isTest = !this.isTest;
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

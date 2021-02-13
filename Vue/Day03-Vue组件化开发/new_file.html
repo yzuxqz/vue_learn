@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <style type="text/css">
+    .red {
+      color: red;
+    }
+  </style>
+  <body>
+    <div id="app">
+      <ul>
+        <li v-for='(item,index) in list' :class='{red:handle(index)}' @click="change(index)">{{item.name}}</li>
+      </ul>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          Currentindex: [0, 2], //有class的那个li，currentindex中存的相当于你要渲染class的dom元素
+          list: [{
+            id: 1,
+            name: 'xqz'
+          }, {
+            id: 2,
+            name: 'wwj'
+          }, {
+            id: 3,
+            name: 'syj'
+          }]
+        },
+        methods: {
+          change: function (index) {
+            if(this.Currentindex.indexOf(index)==-1){
+              this.Currentindex.push(index);
+            }else{
+              this.Currentindex.splice(this.Currentindex.indexOf(index),1);
+            }
+          },
+          handle: function (index) {
+            if (this.Currentindex.indexOf(index) == -1) {
+              return false;
+            } else {
+              return true;
+            }
+          },
+        }
+      })
+    </script>
+  </body>
+
+</html>

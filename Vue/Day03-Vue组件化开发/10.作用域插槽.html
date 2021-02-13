@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="app">
+      <fruit-list :list='list'>
+        <!-- 获取子组件插槽传来的值 -->
+        <template slot-scope='slotProps'>
+          <!-- 通过slotProp.属性名获得值 -->
+          <strong :style="{color:slotProps.info.id==2 ? fontcolor:''}">{{slotProps.info.name}}</strong>
+        </template>
+
+      </fruit-list>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+      Vue.component('fruit-list', {
+        props: ['list'],
+        template: `
+            <div>
+            <li :key='item.id' v-for='(item,index) in list'>
+                <slot :info='item'>{{item.name}}</slot>              //把插槽中的值作为属性传给父组件
+            </li>
+            </div>
+            `
+      })
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          fontcolor: 'orange',
+          list: [{
+              id: 1,
+              name: 'apple',
+            },
+            {
+              id: 2,
+              name: 'orange',
+            }, {
+              id: 3,
+              name: 'banana',
+            }
+          ]
+        }
+      })
+    </script>
+  </body>
+
+</html>

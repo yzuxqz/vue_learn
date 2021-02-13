@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{root}}</div>
+        <second-com></second-com>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        Vue.component('second-com', {
+            data: function () {
+                return {
+                    second: '二级组件'
+                };
+            },
+            template: `<div>
+            <div>{{second}}</div>
+            <third-com></third-com>
+            </div>
+            `,
+        });
+        Vue.component('third-com', {
+            data: function () {
+                return {
+                    third: '三级组件'
+                };
+            },
+            template: `<div>{{third}}</div>`
+        });
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                root: '顶层组件'
+            }
+        })
+    </script>
+</body>
+
+</html>

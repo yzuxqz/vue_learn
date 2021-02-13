@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div id="app">
+            <router-link to="/user/1">User</router-link>
+            <router-link to="/user/2">User</router-link>
+            <router-link :to="{name:'user',params:{id:3}}">User</router-link>
+            <router-link to="/register">Register</router-link>
+
+            <router-view></router-view>
+        </div>
+        <script src="../js/vue.js"></script>
+        <script src="../js/vue-router.js"></script>
+        <script>
+            const User = {
+                props: ['id', 'uname', 'age'],
+                template: '<h1>User{{id+uname + age}}组件</h1>'
+            }
+            const Register = {
+                template: `<h1>Register组件</h1>`
+            }
+
+            const router = new VueRouter({
+                routes: [{
+                        path: '/',
+                        redirect: '/user'
+                    },
+                    { //命名路由
+                        name: 'user',
+                        path: '/user/:id',
+                        component: User,
+                        props: route => ({
+                            uname: 'zs',
+                            age: 12,
+                            id: route.params.id
+                        })
+                    },
+                    {
+                        path: '/register',
+                        component: Register
+                    }
+                ]
+            })
+            var vm = new Vue({
+                el: '#app',
+                router //挂载
+            })
+        </script>
+    </body>
+
+    </html>
+</body>
+
+</html>

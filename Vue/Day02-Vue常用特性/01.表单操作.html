@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <form action="http://itcast.cn">
+            <div>
+                <label for="name">姓名：</label>
+                <input type="text" id="name" v-model='uname'>
+            </div>
+
+            <div>
+                <span>性别：</span>
+                <label for="man" >男</label>
+                <input type="radio" id="man" value="1" v-model='sex'>
+                <label for="woman" > 女</label>
+                <input type="radio" id="woman" value="2" v-model='sex'>
+            </div>
+
+            <div>
+                <span>爱好：</span>
+                <label for="basketball">篮球</label>
+                <input type="checkbox" id="basketball" value="1" v-model='hobbies'>
+                <label for="sing">唱歌</label>
+                <input type="checkbox" id="sing" value="2" v-model='hobbies'>
+                <label for="code">写代码</label>
+                <input type="checkbox" id="code" value="3" v-model='hobbies'>
+            </div>
+            <div>
+                <span>职业：</span>
+                <select name="" id="" v-model='occupation' multiple>
+                    <option value="0">请选择职业...</option>
+                    <option value="1">web前端</option>
+                    <option value="2">java后端</option>
+                </select>
+            </div>
+            <div>
+                <label for="introduction">个人简介：</label>
+                <textarea name="" id="" cols="30" rows="3" v-model='description'></textarea>
+            </div>
+            <div>
+                <input type="submit" @click.prevent='handle'>
+            </div>
+        </form>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                uname: 'xqz',
+                sex:1,
+                hobbies:[1,2],
+                occupation:[1,2],
+                description:'你好'
+            },methods: {
+                handle:function(){
+                    console.log(this.uname);
+                    console.log(this.sex);
+                    console.log(this.hobbies.toString());
+                    console.log(this.occupation.toString());
+                    console.log(this.description);
+                    //Ajax
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
